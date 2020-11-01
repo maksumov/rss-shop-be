@@ -7,9 +7,8 @@ export const getProductById: APIGatewayProxyHandler = async (event) => {
     `getProductById started with event: ${JSON.stringify(event, null, 2)}`
   );
 
-  // hardcoded id
-  const id = "531233";
-  const product = productList.filter((p) => p.id === id);
+  const { byid } = event.pathParameters;
+  const product = productList.filter((p) => p.id === byid);
 
   return {
     statusCode: 200,
