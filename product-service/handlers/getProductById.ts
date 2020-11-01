@@ -7,10 +7,14 @@ export const getProductById: APIGatewayProxyHandler = async (event) => {
     `getProductById started with event: ${JSON.stringify(event, null, 2)}`
   );
 
-  const { byid } = event.pathParameters;
-  const product = productList.filter((p) => p.id === byid)[0] || {};
+  const { id } = event.pathParameters;
+  const product = productList.filter((p) => p.id === id)[0] || {};
 
   return {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": true,
+    },
     statusCode: 200,
     body: JSON.stringify(product, null, 2),
   };
