@@ -8,10 +8,10 @@ export const getProductById: APIGatewayProxyHandler = async (event) => {
   );
 
   const { byid } = event.pathParameters;
-  const product = productList.filter((p) => p.id === byid);
+  const product = productList.filter((p) => p.id === byid)[0] || {};
 
   return {
     statusCode: 200,
-    body: JSON.stringify(product[0], null, 2),
+    body: JSON.stringify(product, null, 2),
   };
 };
