@@ -1,18 +1,16 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
 import "source-map-support/register";
-import productList from "./products.json";
+import getProducts from "./utils/asyncRequest";
+import logger from "./utils/logger";
+import response from "./utils/response";
 
 export const getAllProducts: APIGatewayProxyHandler = async (event) => {
-  console.log(
-    `getAllProducts started with event: ${JSON.stringify(event, null, 2)}`
-  );
+  logger.info(event, "getAllProducts");
 
-  return {
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Credentials": true,
-    },
-    statusCode: 200,
-    body: JSON.stringify(productList, null, 2),
-  };
+  try {
+    return response(200, JSON.stringify(await getProducts(), null, 2));
+  } catch (err) {
+    logger.error(err, "Error catching products list");
+    return response(500, "Internal Server Error");
+  }
 };
