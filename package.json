@@ -1,0 +1,23 @@
+{
+  "name": "rss-shop-be",
+  "version": "1.0.0",
+  "description": "Rolling scopes school Nodejs+AWS shop backend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maksumov/rss-shop-be.git"
+  },
+  "keywords": [
+    "aws",
+    "serverless"
+  ],
+  "author": "Marat Maksumov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maksumov/rss-shop-be/issues"
+  },
+  "homepage": "https://github.com/maksumov/rss-shop-be#readme"
+}

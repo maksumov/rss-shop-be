@@ -1,0 +1,76 @@
+---
+swagger: "2.0"
+info:
+  description: "Additional info at the https://github.com/maksumov/rss-shop-be/pull/1"
+  version: "1.0.0"
+  title: "Maksumov's Store"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "maxumov@gmail.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "wnxy68e0x6.execute-api.eu-west-1.amazonaws.com"
+basePath: "/dev"
+schemes:
+  - "https"
+paths:
+  /product/available/:
+    get:
+      tags:
+        - "product"
+      summary: "Get Products List"
+      description: "Returns a List of Products"
+      operationId: "getAllProducts"
+      produces:
+        - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Product"
+      x-swagger-router-controller: "Product"
+  /product/available/{id}:
+    get:
+      tags:
+        - "product"
+      summary: "Get Product By Id"
+      description: "Returns a single product"
+      operationId: "getProductById"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "ID of product to return"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Product"
+        "404":
+          description: "Product not found"
+      x-swagger-router-controller: "Product"
+definitions:
+  Product:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      title:
+        type: "string"
+      description:
+        type: "string"
+      price:
+        type: "number"
+    example:
+      id: "523123"
+      title: "Apple iPhone"
+      description: "Apple iPhone description"
+      price: 500
+externalDocs:
+  description: "Find out more about Task"
+  url: "https://github.com/rolling-scopes-school/nodejs-aws-tasks/blob/main/task3-product-api/task.md"
