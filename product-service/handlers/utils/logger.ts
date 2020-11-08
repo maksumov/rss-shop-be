@@ -3,7 +3,7 @@
  * @param {Object} event - event object
  * @param {String} handler - lambda name
  */
-const info = (event, handler) =>
+const info = (event, handler: string) : void =>
   console.log(
     `${handler} started with event: ${JSON.stringify(event, null, 2)}`
   );

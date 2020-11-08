@@ -4,8 +4,11 @@ import getProducts from "./utils/asyncRequest";
 import logger from "./utils/logger";
 import response from "./utils/response";
 
-export const getProductById: APIGatewayProxyHandler = async (event) => {
-  logger.info(event, "getAllProducts");
+export const getProductById: APIGatewayProxyHandler = async (
+  event,
+  context
+) => {
+  logger.info({ event, context }, "getAllProducts");
 
   try {
     const { id } = event.pathParameters;
