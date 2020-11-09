@@ -20,7 +20,7 @@ export const getProductById: APIGatewayProxyHandler = async (event) => {
       if (product.length === 0) {
         return response(404, "Product not Found");
       } else {
-        return response(200, JSON.stringify(product, null, 2));
+        return response(200, JSON.stringify(product[0], null, 2));
       }
     } else {
       return response(400, "Bad request");
