@@ -1,0 +1,16 @@
+CREATE TABLE IF NOT EXISTS store.products (
+	id uuid NOT NULL,
+	title text NOT NULL,
+	description text NULL,
+	price int4 NOT NULL,
+	CONSTRAINT products_pk PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS store.stocks (
+	id uuid NOT NULL,
+	product_id uuid NOT NULL,
+	count int4 NOT NULL,
+	CONSTRAINT stocks_pk PRIMARY KEY (id),
+	CONSTRAINT stocks_un UNIQUE (product_id),
+	CONSTRAINT stocks_fk foreign KEY (product_id) REFERENCES store.products(id)
+);
