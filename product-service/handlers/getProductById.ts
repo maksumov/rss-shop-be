@@ -5,7 +5,7 @@ import { pgQuery } from "./utils/pg-client";
 import response from "./utils/response";
 
 export const getProductById: APIGatewayProxyHandler = async (event) => {
-  logger.info(event, "getAllProducts");
+  logger.info(event, "getProductById");
 
   try {
     const { id } = event.pathParameters;
@@ -22,15 +22,21 @@ export const getProductById: APIGatewayProxyHandler = async (event) => {
       });
 
       if (product.length === 0) {
-        return response(404, "Product not Found");
+        return response(
+          404,
+          JSON.stringify({ error: "Product not Found" }, null, 2)
+        );
       } else {
         return response(200, JSON.stringify(product[0], null, 2));
       }
     } else {
-      return response(400, "Bad request");
+      return response(400, JSON.stringify({ error: "Bad request" }, null, 2));
     }
   } catch (err) {
-    logger.error(err, "Error catching products list");
-    return response(500, "Internal Server Error");
+    logger.error(err, "Error catching product by id");
+    return response(
+      500,
+      JSON.stringify({ error: "Internal Server Error" }, null, 2)
+    );
   }
 };

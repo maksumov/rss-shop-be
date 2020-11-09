@@ -27,10 +27,13 @@ export const createProduct: APIGatewayProxyHandler = async (event) => {
     });
     await pgQuery({ text: "COMMIT" });
 
-    return response(200, JSON.stringify(id, null, 2));
+    return response(200, JSON.stringify({ id }, null, 2));
   } catch (err) {
     await pgQuery({ text: "ROLLBACK" });
     logger.error(err, "Error creating product");
-    return response(500, "Internal Server Error");
+    return response(
+      500,
+      JSON.stringify({ error: "Internal Server Error" }, null, 2)
+    );
   }
 };

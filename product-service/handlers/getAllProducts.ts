@@ -23,6 +23,9 @@ export const getAllProducts: APIGatewayProxyHandler = async (event) => {
     );
   } catch (err) {
     logger.error(err, "Error catching products list");
-    return response(500, "Internal Server Error");
+    return response(
+      500,
+      JSON.stringify({ error: "Internal Server Error" }, null, 2)
+    );
   }
 };
