@@ -66,6 +66,11 @@ const serverlessConfiguration: Serverless = {
             method: "post",
             path: "products",
             cors: true,
+            request: {
+              schema: {
+                "application/json": "${file(schema/product.json)}",
+              },
+            },
           },
         },
       ],

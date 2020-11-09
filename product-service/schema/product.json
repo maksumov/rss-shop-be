@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Product",
+  "description": "A product in the catalog",
+  "type": "object",
+  "properties": {
+    "title": {
+      "description": "Product title",
+      "type": "string"
+    },
+    "description": {
+      "description": "Product description",
+      "type": "string"
+    },
+    "price": {
+      "description": "Product price",
+      "type": "integer",
+      "minimum": 1
+    },
+    "count": {
+      "description": "Stocks count",
+      "type": "integer",
+      "minimum": 1
+    }
+  },
+  "required": ["title", "description", "price", "count"]
+}
