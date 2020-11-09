@@ -17,7 +17,7 @@ export const getProductById: APIGatewayProxyHandler = async (event) => {
     FROM store.products products, store.stocks stocks
     WHERE stocks.product_id = products.id and products.id='${id}'`);
 
-      if (!product) {
+      if (product.length === 0) {
         return response(404, "Product not Found");
       } else {
         return response(200, JSON.stringify(product, null, 2));
