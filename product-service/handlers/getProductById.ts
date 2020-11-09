@@ -13,9 +13,13 @@ export const getProductById: APIGatewayProxyHandler = async (event) => {
 
     // test if id is valid UUID
     if (id && isUuid.test(id)) {
-      const product = await pgQuery(`SELECT products.*, stocks.count
+      const product = await pgQuery({
+        name: "get product & stocks by product id",
+        text: `SELECT products.*, stocks.count
     FROM store.products products, store.stocks stocks
-    WHERE stocks.product_id = products.id and products.id='${id}'`);
+    WHERE stocks.product_id = products.id and products.id=$1`,
+        values: [id],
+      });
 
       if (product.length === 0) {
         return response(404, "Product not Found");

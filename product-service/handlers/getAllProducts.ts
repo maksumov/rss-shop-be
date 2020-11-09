@@ -11,9 +11,12 @@ export const getAllProducts: APIGatewayProxyHandler = async (event) => {
     return response(
       200,
       JSON.stringify(
-        await pgQuery(`SELECT products.*, stocks.count
+        await pgQuery({
+          name: "get all products and stocks",
+          text: `SELECT products.*, stocks.count
     FROM store.products products, store.stocks stocks
-    WHERE stocks.product_id = products.id`),
+    WHERE stocks.product_id = products.id`,
+        }),
         null,
         2
       )

@@ -6,10 +6,9 @@ CREATE TABLE IF NOT EXISTS store.products (
 );
 
 CREATE TABLE IF NOT EXISTS store.stocks (
-	id uuid NOT NULL,
+	id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
 	product_id uuid NOT NULL,
 	count int4 NOT NULL,
-	CONSTRAINT stocks_pk PRIMARY KEY (id),
 	CONSTRAINT stocks_un UNIQUE (product_id),
 	CONSTRAINT stocks_fk foreign KEY (product_id) REFERENCES store.products(id)
 );
