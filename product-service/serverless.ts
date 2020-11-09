@@ -40,7 +40,7 @@ const serverlessConfiguration: Serverless = {
         {
           http: {
             method: "get",
-            path: "product/available/",
+            path: "products/",
             cors: true,
           },
         },
@@ -52,7 +52,7 @@ const serverlessConfiguration: Serverless = {
         {
           http: {
             method: "get",
-            path: "product/available/{id}",
+            path: "products/{id}",
             cors: true,
           },
         },

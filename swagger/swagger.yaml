@@ -1,7 +1,7 @@
 ---
 swagger: "2.0"
 info:
-  description: "Additional info at the https://github.com/maksumov/rss-shop-be/pull/1"
+  description: "Additional info at the https://github.com/maksumov/rss-shop-be/pull/2"
   version: "1.0.0"
   title: "Maksumov's Store"
   termsOfService: "http://swagger.io/terms/"
@@ -15,7 +15,7 @@ basePath: "/dev"
 schemes:
   - "https"
 paths:
-  /product/available/:
+  /products:
     get:
       tags:
         - "product"
@@ -31,7 +31,7 @@ paths:
           schema:
             $ref: "#/definitions/Product"
       x-swagger-router-controller: "Product"
-  /product/available/{id}:
+  /products/{id}:
     get:
       tags:
         - "product"
