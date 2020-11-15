@@ -4,7 +4,7 @@
   "description": "Serverless webpack example using Typescript",
   "main": "handler.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "preinstall": "node --eval \"!process.env.npm_config_user_agent.startsWith('pnpm/')&&(console.log('Use `pnpm install` to install dependencies in this repository')||true)&&process.exit(1)\""
   },
   "dependencies": {
     "@types/pg": "^7.14.6",
