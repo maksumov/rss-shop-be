@@ -60,6 +60,19 @@ const serverlessConfiguration: Serverless = {
         },
       ],
     },
+    importFileParser: {
+      handler: "handler.importFileParser",
+      events: [
+        {
+          s3: {
+            bucket: "maksumov-bucket-for-images",
+            event: "s3:ObjectCreated:*",
+            rules: [{ prefix: "uploaded/", suffix: "" }],
+            existing: true,
+          },
+        },
+      ],
+    },
   },
 };
 
