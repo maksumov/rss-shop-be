@@ -8,17 +8,21 @@ const importProductsFile: APIGatewayProxyHandler = async (
 ) => {
   logger.info(event, "importProductsFile");
 
-  const REGION = "eu-west-1";
-  const filename = event.queryStringParameters.name;
-
   // No filename or bad filename
-  if (!filename || !/^[\w,\s-]+\.[A-Za-z]{3}$/.test(filename)) {
+  if (
+    !event.queryStringParameters ||
+    !event.queryStringParameters.name ||
+    !/^[\w,\s-]+\.[A-Za-z]{3}$/.test(event.queryStringParameters.name)
+  ) {
     return response(400, JSON.stringify({ error: "Bad request" }, null, 2));
   }
 
+  const REGION = "eu-west-1";
+  const { name } = event.queryStringParameters;
+
   const bucketParams = {
     Bucket: "maksumov-bucket-for-images",
-    Key: filename,
+    Key: `uploaded/${name}`,
     Expires: 60,
     ContentType: "text/csv",
   };
