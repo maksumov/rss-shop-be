@@ -25,6 +25,18 @@ const serverlessConfiguration: Serverless = {
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
     },
+    iamRoleStatements: [
+      {
+        Effect: "Allow",
+        Action: "s3:ListBucket",
+        Resource: ["arn:aws:s3:::maksumov-bucket-for-images"],
+      },
+      {
+        Effect: "Allow",
+        Action: ["s3:*"],
+        Resource: ["arn:aws:s3:::maksumov-bucket-for-images/*"],
+      },
+    ],
   },
   functions: {
     importProductsFile: {
