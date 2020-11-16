@@ -1,5 +1,7 @@
 import type { Serverless } from "serverless/aws";
 
+const BUCKET_NAME = "maksumov-bucket-for-images";
+
 const serverlessConfiguration: Serverless = {
   service: {
     name: "import-service",
@@ -31,12 +33,12 @@ const serverlessConfiguration: Serverless = {
       {
         Effect: "Allow",
         Action: "s3:ListBucket",
-        Resource: ["arn:aws:s3:::maksumov-bucket-for-images"],
+        Resource: [`arn:aws:s3:::${BUCKET_NAME}`],
       },
       {
         Effect: "Allow",
         Action: ["s3:*"],
-        Resource: ["arn:aws:s3:::maksumov-bucket-for-images/*"],
+        Resource: [`arn:aws:s3:::${BUCKET_NAME}/*`],
       },
     ],
   },
@@ -65,7 +67,7 @@ const serverlessConfiguration: Serverless = {
       events: [
         {
           s3: {
-            bucket: "maksumov-bucket-for-images",
+            bucket: BUCKET_NAME,
             event: "s3:ObjectCreated:*",
             rules: [{ prefix: "uploaded/", suffix: "" }],
             existing: true,
