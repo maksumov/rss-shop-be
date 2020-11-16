@@ -10,6 +10,12 @@ const importProductsFile: APIGatewayProxyHandler = async (
 
   const REGION = "eu-west-1";
   const filename = event.queryStringParameters.name;
+
+  // No filename or bad filename
+  if (!filename || !/^[\w,\s-]+\.[A-Za-z]{3}$/.test(filename)) {
+    return response(400, JSON.stringify({ error: "Bad request" }, null, 2));
+  }
+
   const bucketParams = {
     Bucket: "maksumov-bucket-for-images",
     Key: filename,
