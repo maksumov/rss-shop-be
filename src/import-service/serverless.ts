@@ -34,6 +34,14 @@ const serverlessConfiguration: Serverless = {
           http: {
             method: "get",
             path: "/import",
+            cors: true,
+            request: {
+              parameters: {
+                querystrings: {
+                  name: true,
+                },
+              },
+            },
           },
         },
       ],
