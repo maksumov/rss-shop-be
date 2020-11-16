@@ -3,17 +3,16 @@ import S3 from "aws-sdk/clients/s3";
 import logger from "./utils/logger";
 import { response } from "./utils/response";
 
+const isFilenameWithExtension = (name: string): boolean =>
+  !/^[\w,\s-]+\.[A-Za-z]{3}$/.test(name);
+
 const importProductsFile: APIGatewayProxyHandler = async (
   event: APIGatewayProxyEvent
 ) => {
   logger.info(event, "importProductsFile");
 
   // No filename or bad filename
-  if (
-    !event.queryStringParameters ||
-    !event.queryStringParameters.name ||
-    !/^[\w,\s-]+\.[A-Za-z]{3}$/.test(event.queryStringParameters.name)
-  ) {
+  if (!isFilenameWithExtension(event.queryStringParameters?.name)) {
     return response(400, JSON.stringify({ error: "Bad request" }, null, 2));
   }
 
