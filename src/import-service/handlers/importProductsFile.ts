@@ -4,7 +4,7 @@ import logger from "./utils/logger";
 import { response } from "./utils/response";
 
 const isFilenameWithExtension = (name: string): boolean =>
-  !/^[\w,\s-]+\.[A-Za-z]{3}$/.test(name);
+  /^[\w,\s-]+\.[A-Za-z]{3}$/.test(name);
 
 const importProductsFile: APIGatewayProxyHandler = async (
   event: APIGatewayProxyEvent
@@ -12,12 +12,13 @@ const importProductsFile: APIGatewayProxyHandler = async (
   logger.info(event, "importProductsFile");
 
   // No filename or bad filename
-  if (!isFilenameWithExtension(event.queryStringParameters?.name)) {
+  const name = event.queryStringParameters?.name;
+  if (!name || !isFilenameWithExtension(name)) {
+    console.log("Bad name", name);
     return response(400, JSON.stringify({ error: "Bad request" }, null, 2));
   }
 
   const REGION = "eu-west-1";
-  const { name } = event.queryStringParameters;
 
   const bucketParams = {
     Bucket: "maksumov-bucket-for-images",
