@@ -9,6 +9,8 @@ const serverlessConfiguration: Serverless = {
     // app: your-app-name,
     // org: your-org-name,
   },
+  org: "maksumov",
+  app: "rss-store",
   frameworkVersion: "2",
   custom: {
     webpack: {

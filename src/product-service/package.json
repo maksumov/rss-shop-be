@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "Serverless webpack example using Typescript",
   "main": "handler.js",
-  "scripts": {
-    "preinstall": "node --eval \"!process.env.npm_config_user_agent.startsWith('pnpm/')&&(console.log('Use `pnpm install` to install dependencies in this repository')||true)&&process.exit(1)\""
-  },
   "dependencies": {
     "@types/pg": "^7.14.6",
     "axios": "^0.21.0",
@@ -15,7 +12,7 @@
   "devDependencies": {
     "@types/aws-lambda": "^8.10.17",
     "@types/node": "^10.12.18",
-    "@types/serverless": "^1.72.5",
+    "@types/serverless": "^1.78.10",
     "fork-ts-checker-webpack-plugin": "^3.0.1",
     "serverless-dotenv-plugin": "^3.1.0",
     "serverless-webpack": "^5.2.0",

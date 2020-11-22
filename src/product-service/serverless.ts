@@ -1,12 +1,12 @@
-import type { Serverless } from "serverless/aws";
+import { Serverless } from "serverless/aws";
+import productSchema from "./schema/product.json";
 
 const serverlessConfiguration: Serverless = {
   service: {
     name: "product-service",
-    // app and org for use with dashboard.serverless.com
-    // app: your-app-name,
-    // org: your-org-name,
   },
+  org: "maksumov",
+  app: "rss-store",
   frameworkVersion: "2",
   custom: {
     webpack: {
@@ -68,7 +68,7 @@ const serverlessConfiguration: Serverless = {
             cors: true,
             request: {
               schema: {
-                "application/json": "${file(schema/product.json)}",
+                "application/json": productSchema,
               },
             },
           },
