@@ -31,8 +31,20 @@ const serverlessConfiguration: Serverless = {
       PG_DATABASE: "${env:PG_DATABASE}",
       PG_USERNAME: "${env:PG_USERNAME}",
       PG_PASSWORD: "${env:PG_PASSWORD}",
+      SQS_URL: { Ref: "SQSQueue" },
     },
   },
+  resources: {
+    Resources: {
+      SQSQueue: {
+        Type: "AWS::SQS::Queue",
+        Properties: {
+          QueueName: "catalogItemsQueue",
+        },
+      },
+    },
+  },
+
   functions: {
     getAllProducts: {
       handler: "handler.getAllProducts",
@@ -70,6 +82,19 @@ const serverlessConfiguration: Serverless = {
               schema: {
                 "application/json": productSchema,
               },
+            },
+          },
+        },
+      ],
+    },
+    catalogBatchProcess: {
+      handler: "handler.catalogBatchProcess",
+      events: [
+        {
+          sqs: {
+            batchSize: 5,
+            arn: {
+              "Fn::GetAtt:": ["SQSQueue", "Arn"],
             },
           },
         },
