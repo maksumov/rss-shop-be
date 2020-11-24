@@ -31,8 +31,14 @@ const serverlessConfiguration: Serverless = {
       PG_DATABASE: "${env:PG_DATABASE}",
       PG_USERNAME: "${env:PG_USERNAME}",
       PG_PASSWORD: "${env:PG_PASSWORD}",
-      SQS_URL: { Ref: "SQSQueue" },
     },
+    iamRoleStatements: [
+      {
+        Effect: "Allow",
+        Action: "sqs:*",
+        Resource: "${cf:import-service-dev.SQSQueueArn}",
+      },
+    ],
   },
 
   functions: {
@@ -83,9 +89,7 @@ const serverlessConfiguration: Serverless = {
         {
           sqs: {
             batchSize: 5,
-            arn: {
-              "Fn::GetAtt:": ["SQSQueue", "Arn"],
-            },
+            arn: "${cf:import-service-dev.SQSQueueArn}",
           },
         },
       ],

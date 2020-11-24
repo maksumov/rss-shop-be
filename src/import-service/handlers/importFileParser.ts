@@ -1,5 +1,4 @@
 import { S3Event, S3Handler } from "aws-lambda";
-// import S3 from "aws-sdk/clients/s3";
 import AWS, { SQS } from "aws-sdk";
 import csv from "csv-parser";
 import logger from "./utils/logger";

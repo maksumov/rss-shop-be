@@ -5,13 +5,11 @@ const BUCKET_NAME = "maksumov-bucket-for-images";
 const serverlessConfiguration: Serverless = {
   service: {
     name: "import-service",
-    // app and org for use with dashboard.serverless.com
-    // app: your-app-name,
-    // org: your-org-name,
   },
   org: "maksumov",
   app: "rss-store",
   frameworkVersion: "2",
+
   custom: {
     webpack: {
       webpackConfig: "./webpack.config.js",
@@ -61,6 +59,13 @@ const serverlessConfiguration: Serverless = {
         Type: "AWS::SQS::Queue",
         Properties: {
           QueueName: "catalog-items-queue",
+        },
+      },
+    },
+    Outputs: {
+      SQSQueueArn: {
+        Value: {
+          "Fn::GetAtt": ["SQSQueue", "Arn"],
         },
       },
     },
