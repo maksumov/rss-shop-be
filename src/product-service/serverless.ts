@@ -34,16 +34,6 @@ const serverlessConfiguration: Serverless = {
       SQS_URL: { Ref: "SQSQueue" },
     },
   },
-  resources: {
-    Resources: {
-      SQSQueue: {
-        Type: "AWS::SQS::Queue",
-        Properties: {
-          QueueName: "catalogItemsQueue",
-        },
-      },
-    },
-  },
 
   functions: {
     getAllProducts: {
