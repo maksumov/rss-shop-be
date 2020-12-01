@@ -1,4 +1,5 @@
 import { SQSEvent, SQSHandler } from "aws-lambda";
+import { SNS } from "aws-sdk";
 import logger from "./utils/logger";
 import { pgQuery } from "./utils/pg-client";
 
@@ -27,6 +28,26 @@ export const catalogBatchProcess = (event: SQSEvent): SQSHandler => {
         values: [id, parseInt(count, 10)],
       });
       await pgQuery({ text: "COMMIT" });
+
+      const sns = new SNS({ region: "eu-west-1" });
+      const newProduct = {
+        id,
+        title,
+        description,
+        price: parseInt(price, 10),
+        count: parseInt(count, 10),
+      };
+
+      sns.publish(
+        {
+          Subject: "Product created",
+          Message: JSON.stringify(newProduct, null, 2),
+          TopicArn: process.env.SNS_TOPIC_ARN,
+        },
+        () => {
+          console.log("Send email for products creation: ", newProduct);
+        }
+      );
     } catch (err) {
       await pgQuery({ text: "ROLLBACK" });
       logger.error(err, "Error creating product");
