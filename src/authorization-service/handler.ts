@@ -1,6 +1,14 @@
+import {
+  APIGatewayAuthorizerCallback,
+  APIGatewayTokenAuthorizerEvent,
+} from "aws-lambda";
 import "source-map-support/register";
 
-const generatePolicy = (principalId: string, resource, effect = "Allow") => {
+const generatePolicy = (
+  principalId: string,
+  resource: string,
+  effect = "Allow"
+) => {
   return {
     principalId,
     policyDocument: {
@@ -16,11 +24,15 @@ const generatePolicy = (principalId: string, resource, effect = "Allow") => {
   };
 };
 
-export const basicAuthorizer = async (event, _context, cb) => {
+export const basicAuthorizer = (
+  event: APIGatewayTokenAuthorizerEvent,
+  _context,
+  cb: APIGatewayAuthorizerCallback
+) => {
   console.log("basicAuthorizer invoked", JSON.stringify(event, null, 2));
 
   if (event["type"] != "TOKEN") {
-    cb("Unauthorized");
+    return cb("Unauthorized");
   }
 
   try {
@@ -31,14 +43,21 @@ export const basicAuthorizer = async (event, _context, cb) => {
 
     console.log(`username: ${username} and password: ${password}`);
 
-    const storedUserPassword = process.env[username];
+    const users = JSON.parse(process.env?.CREDENTIALS || "");
+    console.log("users", users);
+    const storedUserPassword = users[username];
+
+    console.log("storedUserPassword", storedUserPassword);
     const effect =
-      !storedUserPassword || storedUserPassword != password ? "Deny" : "Allow";
+      !storedUserPassword || storedUserPassword !== password ? "Deny" : "Allow";
 
     const policy = generatePolicy(encodedCreds, event.methodArn, effect);
 
+    console.log(JSON.stringify(policy, null, 2));
+
     cb(null, policy);
   } catch (e) {
+    console.log("Error catched!");
     cb(`Unauthorized: ${e.message}`);
   }
 };

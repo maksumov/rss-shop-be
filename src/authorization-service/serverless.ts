@@ -35,25 +35,8 @@ const serverlessConfiguration: Serverless = {
   },
 
   functions: {
-    hello: {
+    basicAuthorizer: {
       handler: "handler.basicAuthorizer",
-      events: [
-        {
-          http: {
-            method: "get",
-            path: "basic-auth",
-            cors: true,
-            authorizer: {
-              name: "basicAuthorizer",
-              resultTtlInSeconds: 0,
-              arn:
-                "arn:aws:lambda:#{AWS::Region}:#{AWS:AccountId}:function:authorization-service-basic-auth",
-              identitySource: "method.request.header.Authorization",
-              type: "token",
-            },
-          },
-        },
-      ],
     },
   },
 };
