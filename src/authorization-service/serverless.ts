@@ -14,7 +14,7 @@ const serverlessConfiguration: Serverless = {
     },
   },
   // Add the serverless-webpack plugin
-  plugins: ["serverless-webpack"],
+  plugins: ["serverless-webpack", "serverless-dotenv-plugin"],
   provider: {
     name: "aws",
     region: "eu-west-1",
@@ -25,6 +25,7 @@ const serverlessConfiguration: Serverless = {
     },
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
+      CREDENTIALS: "${env:CREDENTIALS}",
     },
   },
 
@@ -35,12 +36,21 @@ const serverlessConfiguration: Serverless = {
 
   functions: {
     hello: {
-      handler: "handler.hello",
+      handler: "handler.basicAuthorizer",
       events: [
         {
           http: {
             method: "get",
-            path: "hello",
+            path: "basic-auth",
+            cors: true,
+            authorizer: {
+              name: "basicAuthorizer",
+              resultTtlInSeconds: 0,
+              arn:
+                "arn:aws:lambda:#{AWS::Region}:#{AWS:AccountId}:function:authorization-service-basic-auth",
+              identitySource: "method.request.header.Authorization",
+              type: "token",
+            },
           },
         },
       ],
