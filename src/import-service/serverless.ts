@@ -5,11 +5,11 @@ const BUCKET_NAME = "maksumov-bucket-for-images";
 const serverlessConfiguration: Serverless = {
   service: {
     name: "import-service",
-    // app and org for use with dashboard.serverless.com
-    // app: your-app-name,
-    // org: your-org-name,
   },
+  org: "maksumov",
+  app: "rss-store",
   frameworkVersion: "2",
+
   custom: {
     webpack: {
       webpackConfig: "./webpack.config.js",
@@ -28,6 +28,7 @@ const serverlessConfiguration: Serverless = {
     },
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
+      SQS_URL: "${cf:product-service-dev.SQSQueueUrl}",
     },
     iamRoleStatements: [
       {
@@ -40,8 +41,19 @@ const serverlessConfiguration: Serverless = {
         Action: ["s3:*"],
         Resource: [`arn:aws:s3:::${BUCKET_NAME}/*`],
       },
+      {
+        Effect: "Allow",
+        Action: "sqs:*",
+        Resource: "${cf:product-service-dev.SQSQueueArn}",
+      },
     ],
   },
+
+  resources: {
+    Description: "RS School Node in AWS course - import service stack",
+    Resources: {},
+  },
+
   functions: {
     importProductsFile: {
       handler: "handler.importProductsFile",

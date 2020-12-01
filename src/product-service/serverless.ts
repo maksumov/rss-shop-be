@@ -1,12 +1,14 @@
-import type { Serverless } from "serverless/aws";
+import { Serverless } from "serverless/aws";
+import productSchema from "./schema/product.json";
+
+const TOPIC_NAME = "create-product-sns-queue";
 
 const serverlessConfiguration: Serverless = {
   service: {
     name: "product-service",
-    // app and org for use with dashboard.serverless.com
-    // app: your-app-name,
-    // org: your-org-name,
   },
+  org: "maksumov",
+  app: "rss-store",
   frameworkVersion: "2",
   custom: {
     webpack: {
@@ -31,8 +33,68 @@ const serverlessConfiguration: Serverless = {
       PG_DATABASE: "${env:PG_DATABASE}",
       PG_USERNAME: "${env:PG_USERNAME}",
       PG_PASSWORD: "${env:PG_PASSWORD}",
+      SNS_TOPIC_ARN: {
+        Ref: "SNSTopic",
+      },
+    },
+    iamRoleStatements: [
+      {
+        Effect: "Allow",
+        Action: "sqs:*",
+        Resource: {
+          "Fn::GetAtt": ["SQSQueue", "Arn"],
+        },
+      },
+      {
+        Effect: "Allow",
+        Action: "sns:*",
+        Resource: {
+          Ref: "SNSTopic",
+        },
+      },
+    ],
+  },
+
+  resources: {
+    Description: "RS School Node in AWS course - products service stack",
+    Resources: {
+      SQSQueue: {
+        Type: "AWS::SQS::Queue",
+        Properties: {
+          QueueName: "catalog-items-queue",
+        },
+      },
+      SNSTopic: {
+        Type: "AWS::SNS::Topic",
+        Properties: {
+          TopicName: TOPIC_NAME,
+        },
+      },
+      SNSSubscription: {
+        Type: "AWS::SNS::Subscription",
+        Properties: {
+          Endpoint: "maksumov.aws.training@gmail.com",
+          Protocol: "email",
+          TopicArn: {
+            Ref: "SNSTopic",
+          },
+        },
+      },
+    },
+    Outputs: {
+      SQSQueueArn: {
+        Value: {
+          "Fn::GetAtt": ["SQSQueue", "Arn"],
+        },
+      },
+      SQSQueueUrl: {
+        Value: {
+          Ref: "SQSQueue",
+        },
+      },
     },
   },
+
   functions: {
     getAllProducts: {
       handler: "handler.getAllProducts",
@@ -68,8 +130,21 @@ const serverlessConfiguration: Serverless = {
             cors: true,
             request: {
               schema: {
-                "application/json": "${file(schema/product.json)}",
+                "application/json": productSchema,
               },
+            },
+          },
+        },
+      ],
+    },
+    catalogBatchProcess: {
+      handler: "handler.catalogBatchProcess",
+      events: [
+        {
+          sqs: {
+            batchSize: 5,
+            arn: {
+              "Fn::GetAtt": ["SQSQueue", "Arn"],
             },
           },
         },
