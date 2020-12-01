@@ -36,9 +36,35 @@ const serverlessConfiguration: Serverless = {
       {
         Effect: "Allow",
         Action: "sqs:*",
-        Resource: "${cf:import-service-dev.SQSQueueArn}",
+        Resource: {
+          "Fn::GetAtt": ["SQSQueue", "Arn"],
+        },
       },
     ],
+  },
+
+  resources: {
+    Description: "RS School Node in AWS course - products service stack",
+    Resources: {
+      SQSQueue: {
+        Type: "AWS::SQS::Queue",
+        Properties: {
+          QueueName: "catalog-items-queue",
+        },
+      },
+    },
+    Outputs: {
+      SQSQueueArn: {
+        Value: {
+          "Fn::GetAtt": ["SQSQueue", "Arn"],
+        },
+      },
+      SQSQueueUrl: {
+        Value: {
+          Ref: "SQSQueue",
+        },
+      },
+    },
   },
 
   functions: {
@@ -89,7 +115,9 @@ const serverlessConfiguration: Serverless = {
         {
           sqs: {
             batchSize: 5,
-            arn: "${cf:import-service-dev.SQSQueueArn}",
+            arn: {
+              "Fn::GetAtt": ["SQSQueue", "Arn"],
+            },
           },
         },
       ],

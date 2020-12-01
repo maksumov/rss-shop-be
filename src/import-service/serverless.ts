@@ -28,9 +28,7 @@ const serverlessConfiguration: Serverless = {
     },
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
-      SQS_URL: {
-        Ref: "SQSQueue",
-      },
+      SQS_URL: "${cf:product-service-dev.SQSQueueUrl}",
     },
     iamRoleStatements: [
       {
@@ -46,29 +44,14 @@ const serverlessConfiguration: Serverless = {
       {
         Effect: "Allow",
         Action: "sqs:*",
-        Resource: {
-          "Fn::GetAtt": ["SQSQueue", "Arn"],
-        },
+        Resource: "${cf:product-service-dev.SQSQueueArn}",
       },
     ],
   },
 
   resources: {
-    Resources: {
-      SQSQueue: {
-        Type: "AWS::SQS::Queue",
-        Properties: {
-          QueueName: "catalog-items-queue",
-        },
-      },
-    },
-    Outputs: {
-      SQSQueueArn: {
-        Value: {
-          "Fn::GetAtt": ["SQSQueue", "Arn"],
-        },
-      },
-    },
+    Description: "RS School Node in AWS course - import service stack",
+    Resources: {},
   },
 
   functions: {

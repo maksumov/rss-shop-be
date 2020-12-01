@@ -1,4 +1,4 @@
-import { APIGatewayProxyEvent, APIGatewayProxyHandler } from "aws-lambda";
+import { APIGatewayProxyEvent } from "aws-lambda";
 import S3 from "aws-sdk/clients/s3";
 import logger from "./utils/logger";
 import { response } from "./utils/response";
@@ -6,9 +6,7 @@ import { response } from "./utils/response";
 const isFilenameWithExtension = (name: string): boolean =>
   /^[\w,\s-]+\.[A-Za-z]{3}$/.test(name);
 
-const importProductsFile: APIGatewayProxyHandler = async (
-  event: APIGatewayProxyEvent
-) => {
+const importProductsFile = async (event: APIGatewayProxyEvent) => {
   logger.info(event, "importProductsFile");
 
   // No filename or bad filename
