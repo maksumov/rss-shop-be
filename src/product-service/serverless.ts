@@ -1,6 +1,8 @@
 import { Serverless } from "serverless/aws";
 import productSchema from "./schema/product.json";
 
+const TOPIC_NAME = "create-product-sns-queue";
+
 const serverlessConfiguration: Serverless = {
   service: {
     name: "product-service",
@@ -40,6 +42,13 @@ const serverlessConfiguration: Serverless = {
           "Fn::GetAtt": ["SQSQueue", "Arn"],
         },
       },
+      {
+        Effect: "Allow",
+        Action: "sns:*",
+        Resource: {
+          Ref: "SNSTopic",
+        },
+      },
     ],
   },
 
@@ -50,6 +59,22 @@ const serverlessConfiguration: Serverless = {
         Type: "AWS::SQS::Queue",
         Properties: {
           QueueName: "catalog-items-queue",
+        },
+      },
+      SNSTopic: {
+        Type: "AWS::SNS::Topic",
+        Properties: {
+          TopicName: TOPIC_NAME,
+        },
+      },
+      SNSSubscription: {
+        Type: "AWS::SNS::Subscription",
+        Properties: {
+          Endpoint: "maksumov.aws.training@gmail.com",
+          Protocol: "email",
+          TopicArn: {
+            Ref: "SNSTopic",
+          },
         },
       },
     },
