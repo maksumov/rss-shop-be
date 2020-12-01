@@ -70,6 +70,14 @@ const serverlessConfiguration: Serverless = {
                 },
               },
             },
+            authorizer: {
+              // name: "basicAuthorizer",
+              resultTtlInSeconds: 0,
+              arn:
+                "arn:aws:lambda:eu-west-1:434337796878:function:authorization-service-dev-basicAuthorizer",
+              identitySource: "method.request.header.Authorization",
+              type: "token",
+            },
           },
         },
       ],
