@@ -51,7 +51,40 @@ const serverlessConfiguration: Serverless = {
 
   resources: {
     Description: "RS School Node in AWS course - import service stack",
-    Resources: {},
+    Resources: {
+      ApiGatewayRestApi: {
+        Type: "AWS::ApiGateway::RestApi",
+        Properties: {
+          Name: "d73v6k62qb",
+        },
+      },
+      GatewayResponseDenied: {
+        Type: "AWS::ApiGateway::GatewayResponse",
+        Properties: {
+          ResponseParameters: {
+            "gatewayresponse.header.Access-Control-Allow-Origin": "'*'",
+            "gatewayresponse.header.Access-Control-Allow-Credentials": "'true'",
+          },
+          ResponseType: "ACCESS_DENIED",
+          RestApiId: {
+            Ref: "ApiGatewayRestApi",
+          },
+        },
+      },
+      GatewayResponseUnauthorized: {
+        Type: "AWS::ApiGateway::GatewayResponse",
+        Properties: {
+          ResponseParameters: {
+            "gatewayresponse.header.Access-Control-Allow-Origin": "'*'",
+            "gatewayresponse.header.Access-Control-Allow-Credentials": "'true'",
+          },
+          ResponseType: "UNAUTHORIZED",
+          RestApiId: {
+            Ref: "ApiGatewayRestApi",
+          },
+        },
+      },
+    },
   },
 
   functions: {
@@ -69,6 +102,14 @@ const serverlessConfiguration: Serverless = {
                   name: true,
                 },
               },
+            },
+            authorizer: {
+              // name: "basicAuthorizer",
+              resultTtlInSeconds: 0,
+              arn:
+                "arn:aws:lambda:eu-west-1:434337796878:function:authorization-service-dev-basicAuthorizer",
+              identitySource: "method.request.header.Authorization",
+              type: "token",
             },
           },
         },
