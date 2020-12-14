@@ -6,6 +6,8 @@ import * as dotenv from 'dotenv';
 import express from 'express';
 import helmet from 'helmet';
 import { cors } from './middlewares/cors';
+import { interceptor } from './middlewares/interceptor';
+import { mainpage } from './middlewares/mainpage';
 
 dotenv.config();
 
@@ -29,11 +31,8 @@ app.use(express.json());
  * Server Activation
  */
 
-app.use('/', (req, res) =>
-  res.json({
-    message: 'Hello!'
-  })
-);
+app.use(mainpage);
+app.use(interceptor);
 
 const server = app.listen(PORT, () => {
   console.log(`Server started at port ${PORT}`);
