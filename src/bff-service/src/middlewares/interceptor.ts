@@ -1,21 +1,29 @@
 import { NextFunction, Request, Response, Router } from 'express';
-// import {recipients} from '../common/config'
+import { services } from '../common/config';
 
 const interceptor = Router();
 
-interceptor.use('*', (req: Request, res: Response, next: NextFunction) => {
+interceptor.all('*', (req: Request, res: Response, next: NextFunction) => {
   const url = req.originalUrl;
   const body = req.body;
-  const headers = req.headers;
-  const query = req.query;
 
-  console.log('url.split', url.split('/'));
-  // if(url.)
+  /**
+   * Parse originalUrl to find appropriate service Proxied Services List
+   */
+  const urlSplitted = url.split('/');
+  const service = services[urlSplitted[1]];
+  const serviceUrl = urlSplitted.slice(2).join('/');
 
-  console.log({ url, body, headers, query });
-  // res.json({ url, body, headers, query });
-  const splitted = url.split('/');
-  res.json({ splitted });
+  /**
+   * Return 502 if no such service proxied service
+   */
+  if (!service) {
+    res.status(502).json({ error: 'Cannot process request' });
+    return;
+  }
+
+  console.log({ service, serviceUrl });
+  res.json({ service, serviceUrl });
 });
 
 export { interceptor };

@@ -1,12 +1,27 @@
-const recipients: { [key: string]: string } = {
-  // products: 'https://12yhrnlj11.execute-api.eu-west-1.amazonaws.com/dev/products',
-  // cart: 'http://maksumov-cart-api-dev.eu-west-1.elasticbeanstalk.com/'
-};
+/**
+ * Load Config from .env file
+ */
+import { config } from 'dotenv';
+import { resolve } from 'path';
+config({ path: resolve(__dirname, '../../.env') });
 
-['products', 'cart'].forEach(
-  (key) => (recipients[key] = <string>process.env[key])
-);
+/**
+ * Define Object to store list of Proxied Services
+ */
+const services: { [key: string]: string } = {};
 
-console.log('recipients', recipients);
+/**
+ * proxiedServices is a comma-separated list of services to proxy
+ */
+const proxiedServices = process.env?.PROXIED_SERVICES;
 
-export { recipients };
+if (proxiedServices) {
+  proxiedServices
+    .split(',')
+    .forEach((key) => (services[key] = <string>process.env[key]));
+} else {
+  console.log(`Error: PROXIED_SERVICES is absent`);
+  process.exit(-1);
+}
+
+export { services };
