@@ -6,7 +6,10 @@
   "scripts": {
     "build": "tsc -w",
     "start:dev": "nodemon build/index.js",
-    "start:prod": "node build/index.js"
+    "start:prod": "node build/index.js",
+    "eb-init": "eb init --platform node.js --region eu-west-1 maksumov-bff-api",
+    "eb-create": "eb create bff-api-dev --single --cname maksumov-bff-api-dev",
+    "eb-terminate": "eb terminate maksumov-bff-api-dev"
   },
   "author": "Marat Maksumov",
   "license": "ISC",
