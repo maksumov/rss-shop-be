@@ -2,14 +2,11 @@
  * Required External Modules
  */
 
-import * as dotenv from 'dotenv';
 import express from 'express';
 import helmet from 'helmet';
 import { cors } from './middlewares/cors';
 import { interceptor } from './middlewares/interceptor';
 import { mainpage } from './middlewares/mainpage';
-
-dotenv.config();
 
 /**
  * App Variables
