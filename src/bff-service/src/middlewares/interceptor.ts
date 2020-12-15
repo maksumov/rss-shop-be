@@ -28,11 +28,18 @@ interceptor.all(
     request(`${service}/${serviceUrl}`, <Method>method, body)
       .then((response) => {
         console.log(response);
-        res.json(response.data);
+        res.status(response.status).json(response.data);
       })
       .catch((e) => {
-        console.log('Axios request error:', e);
-        res.status(500).json({ error: 'Internal Server Error' });
+        const { headers, status, statusText, config } = e.response;
+        console.log(
+          'Axios request error:',
+          status,
+          statusText,
+          headers,
+          config
+        );
+        res.status(status).json({ error: statusText });
       });
   }
 );
