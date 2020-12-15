@@ -1,15 +1,11 @@
+import { config } from 'dotenv';
+import { resolve } from 'path';
+import { isEmpty } from './isempty';
+
 /**
  * Load Config from .env file
  */
-import { config } from 'dotenv';
-import { resolve } from 'path';
 config({ path: resolve(__dirname, '../../.env') });
-
-/**
- * Check if object is empty
- */
-const isEmpty = (obj: object) =>
-  Object.keys(obj).length === 0 && obj.constructor === Object;
 
 /**
  * Define Object to store list of Proxied Services
