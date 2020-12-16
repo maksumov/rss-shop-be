@@ -16,9 +16,9 @@ interceptor.all(
     /**
      * Parse originalUrl to find appropriate service Proxied Services List
      */
-    const urlSplitted = originalUrl.split('/');
-    const service = services[urlSplitted[1]];
-    const serviceUrl = urlSplitted.slice(2).join('/');
+    const rcpt = originalUrl.split('/')[1].split('?')[0];
+    const service = services[rcpt];
+    const serviceUrl = originalUrl.replace(`/${rcpt}`, '');
 
     /**
      * Return 502 if no such service proxied service
